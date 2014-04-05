@@ -4,7 +4,8 @@
   "description": "Node.js based Jenkins Dashboard",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [
     "Jenkins",
@@ -21,5 +22,17 @@
     "async": "^0.6.2",
     "xml2js": "^0.4.2",
     "sift": "0.0.16"
-  }
+  },
+  "bin": {
+    "jenko": "app.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdarling/jenko.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jdarling/jenko/issues"
+  },
+  "homepage": "https://github.com/jdarling/jenko"
 }
