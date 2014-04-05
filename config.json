@@ -1,0 +1,9 @@
+{
+  default: {
+    jenkins: {
+      //host: 'https://ci.jenkins-ci.org'
+    }
+  },
+  production: {
+  }
+}

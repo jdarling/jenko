@@ -1,0 +1,9 @@
+<h1>{{displayName}}</h2>
+<p>{{description}}</p>
+<h2>Health Reports</h2>
+{{#each healthReport}}
+<img src="/api/v1/jenkins/proxy/static/e83f9ab6/images/32x32/{{iconUrl}}" /> ({{score}}%)</h2>
+{{description}}
+{{/each}}
+<h2>Last Run Output</h2>
+<pre>{{output}}</pre>

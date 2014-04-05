@@ -1,0 +1,18 @@
+<a href="#/job/{{name}}" class="{{class}}" title="{{displayName}}">
+  {{#if inQueue}}
+      <i class="icon-spinner"></i>
+      {{displayName}}
+  {{else}}
+    {{#if running}}
+        <img src="/images/running.gif" style="margin-top: 5px;" />
+        {{displayName}}
+    {{else}}
+      {{#if healthReport.length}}
+        <img src="/api/v1/jenkins/proxy/static/e83f9ab6/images/32x32/{{healthReport.0.iconUrl}}" />
+        {{displayName}}
+      {{else}}
+        {{displayName}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</a>
