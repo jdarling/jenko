@@ -19,9 +19,10 @@ Lots:
     * Implement web sockets
     * Add UI configuration endpoint to API, so UI can be configured from backend
     * Cache more information where we can, only job/{name} is currently cached
+    * Move the enrichment from the UI to the backend
     * Reports, charts, graphs...
     * Add a help screen
-    * Documentation
+    * Documentation, usage, setup, help, credits, etc...
     * Add system configuration to the UI?
 
 Installation
