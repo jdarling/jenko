@@ -1,5 +1,6 @@
 var Jenkins = require('../lib/jenkins');
 var url = require('url');
+var logger = require('../lib/logger');
 //var jobs = require('../lib/store')('jobs');
 var jobs = require('../lib/cache')('jobs', {}, function(id, callback){
   jenkins.job({name: id}, callback);

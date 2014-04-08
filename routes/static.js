@@ -6,6 +6,7 @@ var webroot = './webroot';
 var Hapi = require('hapi');
 //var FileResponse = Hapi.response.File;
 var async = require('async');
+var logger = require('../lib/logger');
 
 var getFileName = function(base){
   return base.replace(/\/$/, '/index.html');
@@ -78,7 +79,7 @@ var getLocalFile = function(request, reply){
       }
     });
   }else{
-    console.log(webroot + fileName);
+    logger.log(webroot + fileName);
     reply.file(webroot+fileName);
     //request.reply(new FileResponse(webroot+fileName));
   }

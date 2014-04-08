@@ -1,7 +1,9 @@
+
 var Application = function(){
   var self = this;
   var aboutPageLoaded = false;
   var startedPageLoaded = false;
+  var useSockets = false;
   var partials = self.partials = new Partials({
     path: "partials/",
     ext: ".html"
@@ -101,6 +103,19 @@ var Application = function(){
       ;
     nav.go();
   };
+  
+  var socket = self.socket = io.connect();
+  socket.on('connect', function(){
+    useSockets = true;
+  });
+  
+  socket.on('message', function(msg){
+    console.log('Message: ', msg);
+  });
+
+  socket.on('disconnect', function(){
+    useSockets = false;
+  });
 };
 
 var application = new Application();
