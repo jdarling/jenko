@@ -49,8 +49,11 @@ Uses a "dirty JSON" format.  So long as it is a valid JavaScript object it will 
       // Lots more you can do here, look at the lib/jenkins.js file to see how you can override any of the endpoints
     },
     queue: {
-      refreshRate: 5000, // Milliseconds between polling Jenkins Server
+      refreshRate: 20000, // Milliseconds between polling Jenkins Server
       concurrency: 5 // Max number of requests to make to server at one time
+    },
+    socket_id: {
+      // Socket.io options go here.
     }
   },
   production: {

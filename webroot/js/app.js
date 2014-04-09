@@ -15,12 +15,6 @@ var Application = function(){
   var displayPage = self.displayPage = function(pageName, data){
     var path = pageName.split('/');
     var nav = path.shift();
-    var navs = document.querySelectorAll('nav li.pure-menu-selected'), i, l = navs.length||0, itm;
-
-    for(i=0; i<l; i++){
-      itm = navs[i];
-      itm.className = itm.className.replace(/pure-menu-selected/g, '');
-    }
 
     partials.get(pageName, function(err, template){
       if(err){
@@ -33,10 +27,6 @@ var Application = function(){
           nav = el('nav li a[href="#home"]');
         }else{
           nav = el('nav li a[href="#'+(nav||'home')+'"]');
-        }
-        if(nav){
-          nav = nav.parentNode;
-          nav.className = (nav.className+' pure-menu-selected').trim();
         }
         pane.innerHTML = template(data||{}, {helpers: handlebarsHelpers});
         if(controllerName){
@@ -111,6 +101,14 @@ var Application = function(){
   
   socket.on('message', function(msg){
     console.log('Message: ', msg);
+  });
+
+  socket.on('job:added', function(msg){
+    console.log('job:added: ', msg);
+  });
+
+  socket.on('job:updated', function(msg){
+    console.log('job:updated: ', msg);
   });
 
   socket.on('disconnect', function(){

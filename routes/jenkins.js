@@ -1,11 +1,36 @@
 var Jenkins = require('../lib/jenkins');
 var url = require('url');
 var logger = require('../lib/logger');
-//var jobs = require('../lib/store')('jobs');
-var jobs = require('../lib/cache')('jobs', {}, function(id, callback){
-  jenkins.job({name: id}, callback);
-});
+var sockets = require('../lib/sockets');
 var jenkins;
+var jobs = require('../lib/cache')('jobs', {
+    onUpdated: function(record){
+      sockets.broadcast('job:updated', record);
+    },
+    onAdded: function(record){
+      sockets.broadcast('job:added', record);
+    },
+    onRemoved: function(record){
+      sockets.broadcast('job:removed', record);
+    },
+    getListing: function(callback){
+      if(!jenkins){
+        return setTimeout(function(){
+          jobs.options.getListing(callback);
+        }, 100);
+      }
+      jenkins.list(null, function(err, response){
+        var jobs = (response||{}).jobs||[];
+        jobs.forEach(function(job, idx, list){
+          job._id = job.name;
+        });
+        callback(err, jobs);
+      });
+    },
+    getUpdate: function(id, callback){
+      jenkins.job({name: id}, callback);
+    }
+  });
 
 var handleJenkinsAPICall = function(request, reply){
   var route = unescape(request.path.replace(/^\/api\/v1\/jenkins\/api\//, ''));
@@ -43,15 +68,17 @@ var getJobs = function(request, reply){
   });
 };
 
+var getJobs2 = function(request, reply){
+  //jenkins.list(null, function(err, response){
+  jobs.options.getListing(function(err, response){
+    reply(err||response);
+  });
+};
+
 var getJob = function(request, reply){
   jobs.get(request.params.name, function(err, response){
     reply(err||response);
   });
-  /*
-  jenkins.job(request.params, function(err, response){
-    reply(err||response);
-  });
-  */
 };
 
 var getJobBuilds = function(request, reply){
@@ -121,6 +148,11 @@ module.exports = function(server, config){
       method: 'GET',
       path: config.route+'jenkins/jobs',
       handler: getJobs
+    },
+    {
+      method: 'GET',
+      path: config.route+'jenkins/jobs2',
+      handler: getJobs2
     },
     {
       method: 'GET',

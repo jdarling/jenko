@@ -2,6 +2,12 @@
   default: {
     jenkins: {
       //host: 'https://ci.jenkins-ci.org'
+    },
+    'socket_io': {
+      'log level': 1
+    },
+    cache: {
+      refreshRate: 20000
     }
   },
   production: {
