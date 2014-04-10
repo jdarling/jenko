@@ -111,6 +111,18 @@ var getJobBuildOutput = function(request, reply){
   });
 };
 
+var getJobBuildPollLog = function(request, reply){
+  jenkins.buildPollLog(request.params, function(err, response){
+    reply(err||response);
+  });
+};
+
+sockets.on('get:jobs', function(msg, socket){
+  jenkins.list(null, function(err, jobs){
+    socket.emit('jobs', (jobs[jobs.root]||jobs).jobs);
+  });
+});
+
 module.exports = function(server, config){
   jenkins = new Jenkins(config);
   server.route([
@@ -183,6 +195,11 @@ module.exports = function(server, config){
       method: 'GET',
       path: config.route+'jenkins/job/{name}/build/{build}/output',
       handler: getJobBuildOutput
+    },
+    {
+      method: 'GET',
+      path: config.route+'jenkins/job/{name}/build/{build}/polllog',
+      handler: getJobBuildPollLog
     }
   ]);
 };

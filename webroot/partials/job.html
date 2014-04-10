@@ -1,9 +1,22 @@
 <h1>{{displayName}}</h2>
 <p>{{description}}</p>
+<hr />
 <h2>Health Reports</h2>
 {{#each healthReport}}
 <img src="/api/v1/jenkins/proxy/static/e83f9ab6/images/32x32/{{iconUrl}}" /> ({{score}}%)</h2>
 {{description}}
 {{/each}}
-<h2>Last Run Output</h2>
-<pre>{{output}}</pre>
+<hr />
+<h2>Job Output</h2>
+<div data-controller="joboutput">
+  <label>
+    <span>Build Number:</span>
+    <select>
+      {{#each builds}}
+        <option value="/api/v1/jenkins/job/{{../name}}/build/{{number}}/output">{{number}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <button class="ink-button blue"><i class="icon-refresh"></i> Refresh</button>
+  <pre>{{output}}</pre>
+</div>

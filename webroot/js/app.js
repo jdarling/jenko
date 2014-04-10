@@ -3,13 +3,21 @@ var Application = function(){
   var self = this;
   var aboutPageLoaded = false;
   var startedPageLoaded = false;
-  var useSockets = false;
+  var useSockets = self.useSockets = false;
   var partials = self.partials = new Partials({
     path: "partials/",
     ext: ".html"
   });
   var trap = function(e){
     console.error(e);
+  };
+  var jobs = self.jobs = TAFFY();
+  var insertUpdateJob = jobs.insertUpdateJob = function(rec){
+    if(jobs({_id: rec._id}).count()){
+      jobs({_id: msg._id}).update(rec);
+    }else{
+      jobs.insert(rec);
+    }
   };
 
   var displayPage = self.displayPage = function(pageName, data){
@@ -31,6 +39,12 @@ var Application = function(){
         pane.innerHTML = template(data||{}, {helpers: handlebarsHelpers});
         if(controllerName){
           controllers.create(pane, controllerName, data);
+        }
+        var elm, elms = els(pane, '[data-controller]'), i, l=elms.length;
+        for(i=0; i<l; i++){
+          elm = elms[i];
+          controllerName = elm.getAttribute('data-controller');
+          controllers.create(elm, controllerName, data);
         }
       }catch(e){
         trap(e);
@@ -99,21 +113,22 @@ var Application = function(){
     useSockets = true;
   });
   
-  socket.on('message', function(msg){
-    console.log('Message: ', msg);
+  socket.on('jobs', function(jobs){
+    console.log(jobs);
+    jobs.forEach(insertUpdateJob);
   });
+  
+  socket.on('job', insertUpdateJob);
+  
+  socket.on('job:added', insertUpdateJob);
 
-  socket.on('job:added', function(msg){
-    console.log('job:added: ', msg);
-  });
-
-  socket.on('job:updated', function(msg){
-    console.log('job:updated: ', msg);
-  });
+  socket.on('job:updated', insertUpdateJob);
 
   socket.on('disconnect', function(){
     useSockets = false;
   });
+  
+  socket.emit('get:jobs');
 };
 
 var application = new Application();

@@ -157,53 +157,6 @@ JobBadgeController.prototype.update = function(){
       }, 15000);
     }
   });
-/*
-  Loader.get('/api/v1/jenkins/job/'+job.name, function(err, job){
-    job.class = 'ink-badge ';
-    switch((job.color||'').replace(/_anime$/, '')){
-      case('yellow'):
-        job.class += 'orange';
-        break;
-      case('grey'):
-        job.class += 'grey';
-        break;
-      case('aborted'):
-        job.class += 'black';
-        break;
-      case('nobuilt'):
-        job.class += 'grey';
-        break;
-      case('blue'):
-        job.class += 'green';
-        break;
-      case('red'):
-        job.class += 'red';
-        break;
-      case('disabled'):
-        job.class += 'grey';
-        break;
-      default:
-        job.class += 'grey';
-    }
-    if(job.color.match(/_anime$/)){
-      job.running = true;
-      job.class = 'ink-badge black';
-    }else{
-      job.running = false;
-    }
-    job.linkName = encodeURI(job.name);
-    if(JSON.stringify(self.data)!=JSON.stringify(job)){
-      self.data = job;
-      container.innerHTML = self.template(self.data, {helpers: handlebarsHelpers});
-    }
-    if(!self.dead){
-      badgeSorter.queueUpdate();
-      self.tmr = setTimeout(function(){
-        self.update();
-      }, 15000);
-    }
-  });
-*/
 };
 JobBadgeController.prototype.teardown = function(){
   var self = this;
@@ -216,6 +169,32 @@ JobBadgeController.prototype.teardown = function(){
 };
 
 controllers.register('jobBadge', JobBadgeController);
+
+var JobOutputController = function(container, data){
+  var sel = el(container, 'select');
+  var btn = el(container, 'button');
+  
+  var displayOutput = function(endpoint){
+    var out = el(container, 'pre');
+    out.innerHTML = 'Loading...';
+    Loader.get(endpoint, function(err, data){
+      out.innerHTML = data;
+    });
+  };
+  
+  btn.onclick = function(e){
+    e.preventDefault();
+    displayOutput(sel.value);
+    return false;
+  };
+  sel.onchange = function(e){
+    e.preventDefault();
+    displayOutput(sel.value);
+    return false;
+  };
+};
+
+controllers.register('joboutput', JobOutputController);
 
 var cleanupControllers = function (e) {
   var walkForRemoval = function(node){
