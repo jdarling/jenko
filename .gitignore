@@ -16,24 +16,6 @@ ref/
 
 node_modules/
 
-#################
-## Eclipse
-#################
-
-*.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-
 # External tool builders
 .externalToolBuilders/
 
@@ -200,24 +182,6 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
-
-#############
-## Python
-#############
-
-*.py[co]
-
-# Packages
-*.egg
-*.egg-info
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
-.installed.cfg
 
 # Installer logs
 pip-log.txt

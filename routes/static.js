@@ -2,7 +2,7 @@
 var path = require('path');
 var fs = require('fs');
 var reHTML = /^.*(\/|\.html)$/i;
-var webroot = './webroot';
+var webroot = path.resolve(__dirname, '../webroot');
 var Hapi = require('hapi');
 //var FileResponse = Hapi.response.File;
 var async = require('async');
@@ -86,15 +86,15 @@ var getLocalFile = function(request, reply){
 };
 
 module.exports = function(server, config){
-	// Serve static files from `webroot` dir.
-	server.route({
-		method: 'GET',
-		path: '/{path*}',
+  // Serve static files from `webroot` dir.
+  server.route({
+    method: 'GET',
+    path: '/{path*}',
     handler: getLocalFile
 /*
   handler: {
-				directory: { path: './webroot', listing: false, index: true }
-		}
+        directory: { path: './webroot', listing: false, index: true }
+    }
 */
-	});
+  });
 };
