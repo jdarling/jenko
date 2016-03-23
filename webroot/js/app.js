@@ -107,19 +107,18 @@ var Application = function(){
       ;
     nav.go();
   };
-  
+
   var socket = self.socket = io.connect();
   socket.on('connect', function(){
     useSockets = true;
   });
-  
+
   socket.on('jobs', function(jobs){
-    console.log(jobs);
     jobs.forEach(insertUpdateJob);
   });
-  
+
   socket.on('job', insertUpdateJob);
-  
+
   socket.on('job:added', insertUpdateJob);
 
   socket.on('job:updated', insertUpdateJob);
@@ -127,7 +126,7 @@ var Application = function(){
   socket.on('disconnect', function(){
     useSockets = false;
   });
-  
+
   socket.emit('get:jobs');
 };
 

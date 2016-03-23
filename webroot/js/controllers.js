@@ -113,7 +113,7 @@ badgeUpdateQueue = async.queue(function(task, done){
       default:
         job.class += 'grey';
     }
-    if(job.color.match(/_anime$/)){
+    if((job.color||'').match(/_anime$/)){
       job.running = true;
       job.class = 'ink-badge black';
     }else{
@@ -173,7 +173,7 @@ controllers.register('jobBadge', JobBadgeController);
 var JobOutputController = function(container, data){
   var sel = el(container, 'select');
   var btn = el(container, 'button');
-  
+
   var displayOutput = function(endpoint){
     var out = el(container, 'pre');
     out.innerHTML = 'Loading...';
@@ -181,7 +181,7 @@ var JobOutputController = function(container, data){
       out.innerHTML = data;
     });
   };
-  
+
   btn.onclick = function(e){
     e.preventDefault();
     displayOutput(sel.value);
